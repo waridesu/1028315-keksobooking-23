@@ -8,8 +8,8 @@ function getRandomNumber(min, max) {
 getRandomNumber(10, 20);
 
 function getCoordinatesNumber(min, max, toFixed) {
-  if (min >= max) {
-    return 'wrong set diapason of min and max value,min are higher than max. Try again';
+  if (min >= max && Math.sign((Math.random() * (max - min) + min).toFixed(toFixed)) < 0) {
+    return 'wrong set diapason of min and max, min higher max value or result negative number. Try again';
   }
   return (Math.random() * (max - min) + min).toFixed(toFixed);
 }
