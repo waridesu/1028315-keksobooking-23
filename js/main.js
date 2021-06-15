@@ -35,14 +35,15 @@ function createTemporalData() {
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
   ];
   const filledData = [];
-
   // eslint-disable-next-line id-length
   for (let i = 1; i <= 10; i++) {
+    const locationLat = getCoordinatesNumber(35.65000, 35.70000, 5);
+    const locationLng = getCoordinatesNumber(35.65000, 35.70000, 5);
     obj = {
       author: {avatar: `img/avatars/user${(i < 10 ? '0' : '') + i}.png`},
       location: {
-        lat: getCoordinatesNumber(35.65000, 35.70000, 5),
-        lng: getCoordinatesNumber(35.65000, 35.70000, 5),
+        lat: locationLat,
+        lng: locationLng,
       },
       offer: {
         title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' +
@@ -52,7 +53,7 @@ function createTemporalData() {
           ' in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur' +
           ' sint occaecat cupidatat non proident, sunt in culpa qui officia' +
           ' deserunt mollit anim id est laborum.',
-        address: this.location.lat,
+        address: `${locationLat} ${locationLng}`,
         price: getRandomNumber(1000, 5000),
         type: type[getRandomNumber(0, type.length - 1)],
         rooms: getRandomNumber(1, 5),
