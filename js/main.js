@@ -23,7 +23,7 @@ function createArr([...source], maxLength) {
 
 function createTemporalData() {
   let obj = {};
-  // any value and i make it as number
+  // any fixed value and i make it as number
   const palace = 1;
   const flat = 2;
   const house = 3;
@@ -31,13 +31,13 @@ function createTemporalData() {
   const hotel = 5;
   const type = [palace, flat, house, bungalow, hotel];
   const time = ['12:00', '13:00', '13:00'];
-
-  const wifi = 1;
-  const dishwasher = 2;
-  const parking = 3;
-  const washer = 4;
-  const elevator = 5;
-  const conditioner = 6;
+  // string array from values
+  const wifi = '1';
+  const dishwasher = '2';
+  const parking = '3';
+  const washer = '4';
+  const elevator = '5';
+  const conditioner = '6';
   const featuresArray = [wifi, dishwasher, parking, washer, elevator, conditioner];
   const photosArray = [
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
