@@ -23,28 +23,33 @@ function createArr([...source], maxLength) {
 
 function createTemporalData() {
   let obj = {};
-  // eslint-disable-next-line no-undef
-  const type = [palace = 1, flat = 2, house = 3, bungalow = 4, hotel = 5];
+  // any value and i make it as number
+  const palace = 1;
+  const flat = 2;
+  const house = 3;
+  const bungalow = 4;
+  const hotel = 5;
+  const type = [palace, flat, house, bungalow, hotel];
   const time = ['12:00', '13:00', '13:00'];
 
-  // eslint-disable-next-line no-undef
-  const featuresArray = [wifi = 1, dishwasher = 2, parking = 3, washer = 4, elevator = 5, conditioner = 6];
+  const wifi = 1;
+  const dishwasher = 2;
+  const parking = 3;
+  const washer = 4;
+  const elevator = 5;
+  const conditioner = 6;
+  const featuresArray = [wifi, dishwasher, parking, washer, elevator, conditioner];
   const photosArray = [
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg,' +
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
   ];
   const filledData = [];
-  // eslint-disable-next-line id-length
-  for (let i = 1; i <= 10; i++) {
+  for (let index = 1; index <= 10; index++) {
     const locationLat = getCoordinatesNumber(35.65000, 35.70000, 5);
     const locationLng = getCoordinatesNumber(139.70000, 139.80000, 5);
     obj = {
-      author: {avatar: `img/avatars/user${(i < 10 ? '0' : '') + i}.png`},
-      location: {
-        lat: locationLat,
-        lng: locationLng,
-      },
+      author: {avatar: `img/avatars/user${(index < 10 ? '0' : '') + index}.png`},
       offer: {
         title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' +
           ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
@@ -68,6 +73,10 @@ function createTemporalData() {
           ' sint occaecat cupidatat non proident, sunt in culpa qui officia' +
           ' deserunt mollit anim id est laborum.',
         photos: createArr([...photosArray], 3),
+      },
+      location: {
+        lat: locationLat,
+        lng: locationLng,
       },
     };
     filledData.push(obj);
