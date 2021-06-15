@@ -38,7 +38,7 @@ function createTemporalData() {
   // eslint-disable-next-line id-length
   for (let i = 1; i <= 10; i++) {
     const locationLat = getCoordinatesNumber(35.65000, 35.70000, 5);
-    const locationLng = getCoordinatesNumber(35.65000, 35.70000, 5);
+    const locationLng = getCoordinatesNumber(139.70000, 139.80000, 5);
     obj = {
       author: {avatar: `img/avatars/user${(i < 10 ? '0' : '') + i}.png`},
       location: {
