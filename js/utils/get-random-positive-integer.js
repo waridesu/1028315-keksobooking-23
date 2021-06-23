@@ -28,3 +28,5 @@ function getRandomPositiveInteger(min, max) {
 }
 
 getRandomPositiveInteger(1, 10);
+
+export { getRandomPositiveInteger };

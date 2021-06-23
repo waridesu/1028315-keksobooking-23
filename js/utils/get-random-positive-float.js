@@ -21,3 +21,5 @@ function getRandomPositiveFloat (min, max, digits = 1) {
   return result.toFixed(digits);
 }
 getRandomPositiveFloat (1, 10,  1);
+
+export { getRandomPositiveFloat };
