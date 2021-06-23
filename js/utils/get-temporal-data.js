@@ -68,7 +68,7 @@ function createTemporalData() {
   }
   return filledData;
 }
-console.log('hi');
+
 createTemporalData();
 
 export  { createTemporalData };
