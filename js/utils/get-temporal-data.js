@@ -1,5 +1,5 @@
-import {getCoordinatesNumber} from './get-coordinates-number';
-import {getRandomNumber} from './get-random-number';
+import {getCoordinatesNumber} from './get-coordinates-number.js';
+import {getRandomNumber} from './get-random-number.js';
 
 function createArr([...source], maxLength) {
   return Array.from({length: Math.min(source.length, 1 + Math.random() * maxLength | 0)},
