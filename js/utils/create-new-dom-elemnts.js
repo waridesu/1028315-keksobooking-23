@@ -53,6 +53,4 @@ function createNewDomElement(item) {
   return cardTemplate;
 }
 
-
-
 export {createNewDomElement};
