@@ -1,6 +1,4 @@
-import {createTemporalData} from './get-temporal-data.js';
 
-const offerArray = createTemporalData();
 const cardTemplate = document.querySelector('#card').content;
 
 function createNewDomElement(item) {
@@ -55,10 +53,6 @@ function createNewDomElement(item) {
   return cardTemplate;
 }
 
-const map = [];
-offerArray.forEach((value) => map.push(createNewDomElement(value)));
 
-const canvasBlock = document.querySelector('#map-canvas');
-canvasBlock.append(createNewDomElement(offerArray[0]));
 
 export {createNewDomElement};
