@@ -5,5 +5,5 @@ const offerArray = createTemporalData();
 const map = [];
 offerArray.forEach((value) => map.push(createNewDomElement(value)));
 
-const canvasBlock = document.querySelector('#map-canvas');
-canvasBlock.append(createNewDomElement(offerArray[0]));
+const mapBlock = document.querySelector('#map-canvas');
+mapBlock.append(createNewDomElement(offerArray[0]));
