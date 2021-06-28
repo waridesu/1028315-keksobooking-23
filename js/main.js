@@ -52,8 +52,7 @@ offerArray.forEach((element)=> {
     icon,
     draggable: true,
   });
-  const popUp = createNewDomElement(element);
   marker
-    .addTo(map)
-    .bindPopup(popUp);
+    .bindPopup(createNewDomElement(element))
+    .addTo(map);
 });

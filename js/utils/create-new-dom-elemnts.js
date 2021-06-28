@@ -13,11 +13,11 @@ function createNewDomElement(item) {
       <p class="popup__text popup__text--capacity ${hideIfNull(item.offer.rooms && item.offer.guests)}">${item.offer.rooms} комнаты для ${item.offer.guests} гостей</p>
       <p class="popup__text popup__text--time ${hideIfNull(item.offer.checkin && item.offer.checkout)}">${item.offer.checkin}, выезд до ${item.offer.checkout}</p>
       <ul class="popup__features ${hideIfNull(item.offer.features)}">
-        ${item.offer.features.forEach((element) => cardTemplate.querySelector('.popup__features').append(`<li className="popup__feature popup__feature--${element}"></li>`))}
+        ${item.offer.features.map((element) => `<li class="popup__feature popup__feature--${element}"></li>`).join('')}
       </ul>
       <p class="popup__description ${hideIfNull(item.offer.description)}">${item.offer.description}</p>
       <div class="popup__photos ${hideIfNull(item.offer.photos)}">
-        ${item.offer.photos.forEach((element) => cardTemplate.querySelector('.popup__photos').append(`<img src="${element}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`))}
+        ${item.offer.photos.map((element) => `<img src="${element}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('')}
       </div>
     </article>`;
   return cardTemplate;
