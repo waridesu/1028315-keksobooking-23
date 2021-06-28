@@ -7,7 +7,7 @@ offerArray.forEach((value) => dataArray.push(createNewDomElement(value)));
 const mapAddress = document.querySelector('#address');
 let isLoadedMap = false;
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
@@ -40,7 +40,7 @@ mainPinMarker.addTo(map);
 mainPinMarker.on('dragend', (event) => mapAddress.value = `${event.target._latlng.lat.toFixed(4)} ${event.target._latlng.lng.toFixed(4)}`);
 offerArray.forEach((element)=> {
   const icon = L.icon({
-    iconUrl: '../img/pin.svg',
+    iconUrl: './img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   });
