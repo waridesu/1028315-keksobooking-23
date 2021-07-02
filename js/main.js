@@ -1,5 +1,6 @@
 import {createTemporalData} from './utils/get-temporal-data.js';
 import {createNewDomElement} from './utils/create-new-dom-elemnts.js';
+import './utils/set-processing-logic.js';
 
 const offerArray = createTemporalData();
 const dataArray = [];
