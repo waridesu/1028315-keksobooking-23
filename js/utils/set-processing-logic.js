@@ -1,5 +1,8 @@
 const typeOfResidence = document.querySelector('#type');
-
+if(typeOfResidence.value === 'bungalow'){
+  const priceByNight = document.querySelector('#price');
+  priceByNight.value = 0;
+}
 typeOfResidence.addEventListener('change', (event) => {
   const priceByNight = document.querySelector('#price');
   switch(event.target.value) {
