@@ -1,6 +1,8 @@
 import {createTemporalData} from './utils/get-temporal-data.js';
 import {createNewDomElement} from './utils/create-new-dom-elemnts.js';
 import './utils/set-processing-logic.js';
+import {createFetch, sendForm} from './utils/toFetchData.js';
+
 
 const offerArray = createTemporalData();
 const dataArray = [];
@@ -39,21 +41,47 @@ L.tileLayer(
 mainPinMarker.addTo(map);
 
 mainPinMarker.on('dragend', (event) => mapAddress.value = `${event.target._latlng.lat.toFixed(4)} ${event.target._latlng.lng.toFixed(4)}`);
-offerArray.forEach((element)=> {
-  const icon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-  const marker = L.marker({
-    lat: element.location.lat,
-    lng: element.location.lng,
+
+createFetch(
+  (place) => place.forEach((element) => {
+    const icon = L.icon({
+      iconUrl: './img/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+    const marker = L.marker([
+      element.location.lat,
+      element.location.lng,
+    ],
+    {
+      icon,
+    });
+
+    marker
+      .addTo(map)
+      .bindPopup(createNewDomElement(element), { keepToView: true });
   },
-  {
-    icon,
-    draggable: true,
-  });
-  marker
-    .bindPopup(createNewDomElement(element))
-    .addTo(map);
+  ),
+  (err) => document.body.innerHTML += `<div class="error">
+                    <p class="error__message">${err.message}</p>
+                    <button type="button" class="error__button" onclick="document.querySelector('.error').style.display='none'">Попробовать снова</button>
+                </div>`);
+
+
+const placeForm = document.querySelector('.ad-form');
+placeForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  sendForm(
+    ()=> document.body.innerHTML+=`<div class="success" onclick="document.querySelector('.success').style.display='none'">
+      <p class="success__message">Ваше объявление<br>успешно размещено!</p>
+    </div>`,
+    ()=> document.body.innerHTML+=`<div class="error">
+      <p class="error__message">Ошибка размещения объявления</p>
+      <button type="button" class="error__button" onclick="document.querySelector('.error').style.display='none'">Попробовать снова</button>
+    </div>`,
+    new FormData(event.target),
+  );
+  return placeForm.reset();
 });
+const resetForm = document.querySelector('.ad-form__reset');
+resetForm.addEventListener('click',()=> placeForm.reset());
