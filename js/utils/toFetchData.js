@@ -12,18 +12,28 @@ function createFetch(onSuccess, onError){
       throw  new Error(`${response.status} ${response.statusText}`);
     })
     .then((json) => onSuccess(json))
-    .catch((err) => onError(err));
+    .catch((err) => {
+      onError(err);
+    });
 }
-createFetch();
 
-function sendForm (data) {
+function sendForm (onSuccess, onError, data) {
   return fetch('https://23.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
       credentials: 'same-origin',
-      body: new FormData(data),
+      body: data,
+    })
+    .then((response)=>{
+      if(response.ok){
+        onSuccess();
+      } else {
+        onError('no');
+      }
+    })
+    .catch(()=> {
+      onError('no');
     });
 }
-sendForm();
 
 export {createFetch, sendForm};
