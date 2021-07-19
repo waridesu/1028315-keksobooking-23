@@ -77,8 +77,8 @@ function  createMarker(element){
 }
 
 createFetch(
-  (place) => place.forEach((element) => {
-    createMarker(element).slice(0,10);
+  (place) => place.slice(0, 10).forEach((element) => {
+    createMarker(element);
   }),
 
   (err) => document.body.innerHTML += `<div class="error">
@@ -107,60 +107,71 @@ formFilter.addEventListener('change', () => {
   createFetch(
     (place) => {
       markerGroup.clearLayers();
-      const houseTypeElements = place.filter((x) => {
-        switch(houseType){
-          case 'any': return true;
-          case 'bungalow': return true;
-          case 'flat': return true;
-          case 'hotel': return true;
-          case 'house': return true;
-          case 'palace': return true;
-          default:
-            return false;
+      const  houseTypeElements= place.filter((element) => {
+        if(element.offer.type === houseType) {
+          if(houseType === 'any') {
+            return true;
+          } else if(houseType === 'bungalow') {
+            return true;
+          } else if(houseType === 'flat') {
+            return true;
+          } else if(houseType === 'hotel') {
+            return true;
+          } else if (houseType === 'house') {
+            return true;
+          } else if (houseType === 'palace') {
+            return true;
+          }
+          return false;
         }
+
       });
-      const housePriceElements = houseTypeElements.filter((x) => {
-        switch(housePrice){
-          case 'any': return true;
-          case 'middle' && (10000 <= housePrice.offer.price <= 50000): return true;
-          case 'low' && (housePrice.offer.price<=10000): return true;
-          case 'high' && (housePrice.offer.price>=50000): return true;
-          default:
-            return false;
+      const housePriceElements = houseTypeElements.filter((element) => {
+        if (housePrice === 'any') {
+          return true;
+        } else if (housePrice === 'low' && (element.offer.price <= 10000)) {
+          return  true;
+        } else if (housePrice === 'high' && (element.offer.price >= 50000)) {
+          return true;
+        } else if (housePrice === 'middle' && (element.offer.price >= 10000 && element.offer.price <= 50000)) {
+          return  true;
         }
+        return false;
       });
-      const houseRoomElements = housePriceElements.filter((x)=> {
-        switch(houseRoom){
-          case 'any': return true;
-          case '1' : return true;
-          case '2' : return true;
-          case '3' : return true;
-          default:
-            return false;
+      const houseRoomElements = housePriceElements.filter((element)=> {
+        if(houseRoom ==='any' && element.offer.rooms > 3) {
+          return true;
+        } else if(houseRoom ==='1' && element.offer.rooms === 1) {
+          return true;
+        }else if(houseRoom ==='2' && element.offer.rooms === 2) {
+          return true;
+        }else if(houseRoom ==='3' && element.offer.rooms === 3) {
+          return true;
         }
+        return false;
       });
-      const houseGuestsElements = houseRoomElements.filter((x)=>{
-        switch(houseGuests){
-          case 'any': return true;
-          case '0' : return true;
-          case '1' : return true;
-          case '2' : return true;
-          default:
-            return false;
+      const houseGuestsElements = houseRoomElements.filter((element)=>{
+        if(houseGuests ==='any' && element.offer.guests > 2) {
+          return true;
+        } else if(houseGuests ==='0' && element.offer.guests === 0) {
+          return true;
+        }else if(houseGuests ==='1' && element.offer.guests === 1) {
+          return true;
+        }else if(houseGuests ==='2' && element.offer.guests === 2) {
+          return true;
         }
+        return false;
       });
-      const featuresWifiElement = houseGuestsElements.filter((x)=> featuresWifi);
-      const featuresDishwasherElement = featuresWifiElement.filter((x)=> featuresDishwasher);
-      const featuresParkingElement = featuresDishwasherElement.filter((x)=> featuresParking);
-      const featuresWasherElement = featuresParkingElement.filter((x)=> featuresWasher);
-      const featuresElevatorElement = featuresWasherElement.filter((x)=> featuresElevator);
-      const featuresConditionerElement = featuresElevatorElement.filter((x)=> featuresConditioner);
+      const featuresWifiElement = houseGuestsElements.filter((element)=> element.offer.features.filter((item)=> item=== featuresWifi ));
+      const featuresDishwasherElement = featuresWifiElement.filter((element)=> element.offer.features.filter((item)=> item === featuresDishwasher ));
+      const featuresParkingElement = featuresDishwasherElement.filter((element)=> element.offer.features.filter((item)=> item === featuresParking ));
+      const featuresWasherElement = featuresParkingElement.filter((element)=> element.offer.features.filter((item)=> item === featuresWasher ));
+      const featuresElevatorElement = featuresWasherElement.filter((element)=> element.offer.features.filter((item)=> item === featuresElevator ));
+      const featuresConditionerElement = featuresElevatorElement.filter((element)=> element.offer.features.filter((item)=> item === featuresConditioner ));
 
 
-      const houseRoomsElements = featuresConditionerElement.filter((x) => {
-        houseRoomsElements.forEach((element) => {
-          createMarker(element);
-        });
+      featuresConditionerElement.slice(0,10).forEach((element) => {
+        createMarker(element);
       });
 
     });
