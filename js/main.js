@@ -78,7 +78,7 @@ function  createMarker(element){
 
 createFetch(
   (place) => place.forEach((element) => {
-    createMarker(element);
+    createMarker(element).slice(0,10);
   }),
 
   (err) => document.body.innerHTML += `<div class="error">
@@ -89,26 +89,83 @@ createFetch(
 
 const placeForm = document.querySelector('.ad-form');
 
-const hasType = document.querySelector('#housing-type');
-hasType.addEventListener('change', (event) => {
-  const value = event.target.value;
+const formFilter = document.querySelector('.map__filters');
+formFilter.addEventListener('change', () => {
+  const filtersForm = document.forms.filters;
+  const filtersFormData = new FormData(filtersForm);
+  const houseType = filtersFormData.get('housing-type');
+  const housePrice = filtersFormData.get('housing-price');
+  const houseRoom = filtersFormData.get('housing-rooms');
+  const houseGuests = filtersFormData.get('housing-guests');
+  const featuresWifi = filtersFormData.get('features_wifi');
+  const featuresDishwasher = filtersFormData.get('features_dishwasher');
+  const featuresParking = filtersFormData.get('features_parking');
+  const featuresWasher = filtersFormData.get('features_washer');
+  const featuresElevator = filtersFormData.get('features_elevator');
+  const featuresConditioner = filtersFormData.get('features_conditioner');
+
   createFetch(
     (place) => {
       markerGroup.clearLayers();
-      place.forEach((element) => {
-        if (element.offer.type === value || value === 'any') {
-          if(element.offer.price ===value || value === 'any'){
-            createMarker(element);
-          }
+      const houseTypeElements = place.filter((x) => {
+        switch(houseType){
+          case 'any': return true;
+          case 'bungalow': return true;
+          case 'flat': return true;
+          case 'hotel': return true;
+          case 'house': return true;
+          case 'palace': return true;
+          default:
+            return false;
         }
       });
-    },
+      const housePriceElements = houseTypeElements.filter((x) => {
+        switch(housePrice){
+          case 'any': return true;
+          case 'middle' && (10000 <= housePrice.offer.price <= 50000): return true;
+          case 'low' && (housePrice.offer.price<=10000): return true;
+          case 'high' && (housePrice.offer.price>=50000): return true;
+          default:
+            return false;
+        }
+      });
+      const houseRoomElements = housePriceElements.filter((x)=> {
+        switch(houseRoom){
+          case 'any': return true;
+          case '1' : return true;
+          case '2' : return true;
+          case '3' : return true;
+          default:
+            return false;
+        }
+      });
+      const houseGuestsElements = houseRoomElements.filter((x)=>{
+        switch(houseGuests){
+          case 'any': return true;
+          case '0' : return true;
+          case '1' : return true;
+          case '2' : return true;
+          default:
+            return false;
+        }
+      });
+      const featuresWifiElement = houseGuestsElements.filter((x)=> featuresWifi);
+      const featuresDishwasherElement = featuresWifiElement.filter((x)=> featuresDishwasher);
+      const featuresParkingElement = featuresDishwasherElement.filter((x)=> featuresParking);
+      const featuresWasherElement = featuresParkingElement.filter((x)=> featuresWasher);
+      const featuresElevatorElement = featuresWasherElement.filter((x)=> featuresElevator);
+      const featuresConditionerElement = featuresElevatorElement.filter((x)=> featuresConditioner);
 
-    (err) => document.body.innerHTML += `<div class="error">
-                    <p class="error__message">${err.message}</p>
-                    <button type="button" class="error__button" onclick="document.querySelector('.error').style.display='none'">Попробовать снова</button>
-                </div>`);
+
+      const houseRoomsElements = featuresConditionerElement.filter((x) => {
+        houseRoomsElements.forEach((element) => {
+          createMarker(element);
+        });
+      });
+
+    });
 });
+
 placeForm.addEventListener('submit', (event) => {
   event.preventDefault();
   sendForm(
