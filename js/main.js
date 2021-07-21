@@ -143,7 +143,7 @@ formFilter.addEventListener('change', () => {
         return false;
       });
       const houseGuestsElements = houseRoomElements.filter((element) => {
-        if (houseGuests === 'any' && element.offer.guests > 2) {
+        if (houseGuests === 'any' || element.offer.guests > 2) {
           return true;
         } else if (houseGuests === '0' && element.offer.guests === 0) {
           return true;
@@ -154,14 +154,24 @@ formFilter.addEventListener('change', () => {
         }
         return false;
       });
-      const featuresWifiElement = houseGuestsElements.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresWifi));
-      const featuresDishwasherElement = featuresWifiElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresDishwasher));
-      const featuresParkingElement = featuresDishwasherElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresParking));
-      const featuresWasherElement = featuresParkingElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresWasher));
-      const featuresElevatorElement = featuresWasherElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresElevator));
-      const featuresConditionerElement = featuresElevatorElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresConditioner));
+      const fieldSetElements = houseGuestsElements.filter((element)=> {
+        if(element.offer.features.values((item) => item === featuresWifi)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresDishwasher)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresParking)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresWasher)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresElevator)) {
+          return true;
+        }else if (element.offer.features.values((item) => item === featuresConditioner)) {
+          return true;
+        }
+        return false;
+      });
 
-      featuresConditionerElement.slice(0, 10).forEach((element) => {
+      fieldSetElements.slice(0, 10).forEach((element) => {
         createMarker(element);
       });
 
