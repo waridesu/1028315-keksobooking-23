@@ -84,8 +84,7 @@ const placeForm = document.querySelector('.ad-form');
 
 const formFilter = document.querySelector('.map__filters');
 formFilter.addEventListener('change', () => {
-  const filtersForm = document.forms.filters;
-  const filtersFormData = new FormData(filtersForm);
+  const filtersFormData = new FormData(document.forms.filters);
   const houseType = filtersFormData.get('housing-type');
   const housePrice = filtersFormData.get('housing-price');
   const houseRoom = filtersFormData.get('housing-rooms');
@@ -155,7 +154,7 @@ formFilter.addEventListener('change', () => {
         }
         return false;
       });
-      const featuresWifiElement = houseGuestsElements.filter((element)=> element.offer.features.filter((item)=> item=== featuresWifi ));
+      const featuresWifiElement = houseGuestsElements.filter((element)=> element.offer.features.filter((item)=> item === featuresWifi ));
       const featuresDishwasherElement = featuresWifiElement.filter((element)=> element.offer.features.filter((item)=> item === featuresDishwasher ));
       const featuresParkingElement = featuresDishwasherElement.filter((element)=> element.offer.features.filter((item)=> item === featuresParking ));
       const featuresWasherElement = featuresParkingElement.filter((element)=> element.offer.features.filter((item)=> item === featuresWasher ));
