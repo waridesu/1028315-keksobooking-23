@@ -51,7 +51,7 @@ MAIN_PIN_MARKER.addTo(MAP);
 
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
 
-const  createMarker =(element)=> {
+const createMarker = (element) => {
   const ICON = L.icon({
     iconUrl: './img/pin.svg',
     iconSize: [40, 40],
@@ -89,25 +89,25 @@ formFilter.addEventListener('change', () => {
   const housePrice = filtersFormData.get('housing-price');
   const houseRoom = filtersFormData.get('housing-rooms');
   const houseGuests = filtersFormData.get('housing-guests');
-  const featuresWifi = filtersFormData.get('features_wifi');
-  const featuresDishwasher = filtersFormData.get('features_dishwasher');
-  const featuresParking = filtersFormData.get('features_parking');
-  const featuresWasher = filtersFormData.get('features_washer');
-  const featuresElevator = filtersFormData.get('features_elevator');
-  const featuresConditioner = filtersFormData.get('features_conditioner');
+  const featuresWifi = filtersFormData.get('wifi');
+  const featuresDishwasher = filtersFormData.get('dishwasher');
+  const featuresParking = filtersFormData.get('parking');
+  const featuresWasher = filtersFormData.get('washer');
+  const featuresElevator = filtersFormData.get('elevator');
+  const featuresConditioner = filtersFormData.get('conditioner');
 
   createFetch(
     (place) => {
       MARKER_GROUP.clearLayers();
-      const houseTypeElements= place.filter((element) => {
-        if(element.offer.type === houseType) {
-          if(houseType === 'any') {
+      const houseTypeElements = place.filter((element) => {
+        if (element.offer.type === houseType) {
+          if (houseType === 'any') {
             return true;
-          } else if(houseType === 'bungalow') {
+          } else if (houseType === 'bungalow') {
             return true;
-          } else if(houseType === 'flat') {
+          } else if (houseType === 'flat') {
             return true;
-          } else if(houseType === 'hotel') {
+          } else if (houseType === 'hotel') {
             return true;
           } else if (houseType === 'house') {
             return true;
@@ -122,46 +122,46 @@ formFilter.addEventListener('change', () => {
         if (housePrice === 'any') {
           return true;
         } else if (housePrice === 'low' && (element.offer.price <= 10000)) {
-          return  true;
+          return true;
         } else if (housePrice === 'high' && (element.offer.price >= 50000)) {
           return true;
         } else if (housePrice === 'middle' && (element.offer.price >= 10000 && element.offer.price <= 50000)) {
-          return  true;
-        }
-        return false;
-      });
-      const houseRoomElements = housePriceElements.filter((element)=> {
-        if(houseRoom ==='any' && element.offer.rooms > 3) {
-          return true;
-        } else if(houseRoom ==='1' && element.offer.rooms === 1) {
-          return true;
-        }else if(houseRoom ==='2' && element.offer.rooms === 2) {
-          return true;
-        }else if(houseRoom ==='3' && element.offer.rooms === 3) {
           return true;
         }
         return false;
       });
-      const houseGuestsElements = houseRoomElements.filter((element)=>{
-        if(houseGuests ==='any' && element.offer.guests > 2) {
+      const houseRoomElements = housePriceElements.filter((element) => {
+        if (houseRoom === 'any' && element.offer.rooms > 3) {
           return true;
-        } else if(houseGuests ==='0' && element.offer.guests === 0) {
+        } else if (houseRoom === '1' && element.offer.rooms === 1) {
           return true;
-        }else if(houseGuests ==='1' && element.offer.guests === 1) {
+        } else if (houseRoom === '2' && element.offer.rooms === 2) {
           return true;
-        }else if(houseGuests ==='2' && element.offer.guests === 2) {
+        } else if (houseRoom === '3' && element.offer.rooms === 3) {
           return true;
         }
         return false;
       });
-      const featuresWifiElement = houseGuestsElements.filter((element)=> element.offer.features.filter((item)=> item === featuresWifi ));
-      const featuresDishwasherElement = featuresWifiElement.filter((element)=> element.offer.features.filter((item)=> item === featuresDishwasher ));
-      const featuresParkingElement = featuresDishwasherElement.filter((element)=> element.offer.features.filter((item)=> item === featuresParking ));
-      const featuresWasherElement = featuresParkingElement.filter((element)=> element.offer.features.filter((item)=> item === featuresWasher ));
-      const featuresElevatorElement = featuresWasherElement.filter((element)=> element.offer.features.filter((item)=> item === featuresElevator ));
-      const featuresConditionerElement = featuresElevatorElement.filter((element)=> element.offer.features.filter((item)=> item === featuresConditioner ));
+      const houseGuestsElements = houseRoomElements.filter((element) => {
+        if (houseGuests === 'any' && element.offer.guests > 2) {
+          return true;
+        } else if (houseGuests === '0' && element.offer.guests === 0) {
+          return true;
+        } else if (houseGuests === '1' && element.offer.guests === 1) {
+          return true;
+        } else if (houseGuests === '2' && element.offer.guests === 2) {
+          return true;
+        }
+        return false;
+      });
+      const featuresWifiElement = houseGuestsElements.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresWifi));
+      const featuresDishwasherElement = featuresWifiElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresDishwasher));
+      const featuresParkingElement = featuresDishwasherElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresParking));
+      const featuresWasherElement = featuresParkingElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresWasher));
+      const featuresElevatorElement = featuresWasherElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresElevator));
+      const featuresConditionerElement = featuresElevatorElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresConditioner));
 
-      featuresConditionerElement.slice(0,10).forEach((element) => {
+      featuresConditionerElement.slice(0, 10).forEach((element) => {
         createMarker(element);
       });
 
