@@ -1,15 +1,12 @@
 import {createNewDomElement} from './utils/create-new-dom-elemnts.js';
 import './utils/set-processing-logic.js';
 import {createFetch, sendForm} from './utils/toFetchData.js';
+import {afterInit, onInit} from './utils/disable-on-init.js';
 
 const mapAddress = document.querySelector('#address');
-const mainForm = document.querySelector('.ad-form');
-const toggleDisabled = (tagName, boolean) => mainForm.querySelectorAll(tagName).forEach((element) => element.disabled = boolean);
-mainForm.classList.add('ad-form--disabled');
-toggleDisabled('input', true);
-toggleDisabled('select', true);
-toggleDisabled('textarea', true);
-toggleDisabled('checkbox', true);
+
+
+onInit();
 
 const MAIN_PIN_ICON = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -28,13 +25,7 @@ const MAIN_PIN_MARKER =
 
 const MAP = L.map('map-canvas');
 MAP
-  .on('load', () => {
-    mainForm.classList.remove('ad-form--disabled');
-    toggleDisabled('input', false);
-    toggleDisabled('select', false);
-    toggleDisabled('textarea', false);
-    toggleDisabled('checkbox', false);
-  })
+  .on('load', () => afterInit())
   .setView({
     lat: 35.658581,
     lng: 139.745438,
@@ -73,7 +64,6 @@ createFetch(
   (place) => place.slice(0, 10).forEach((element) => {
     createMarker(element);
   }),
-
   (err) => document.body.innerHTML += `<div class="error">
                     <p class="error__message">${err.message}</p>
                     <button type="button" class="error__button" onclick="document.querySelector('.error').style.display='none'">Попробовать снова</button>
@@ -100,23 +90,19 @@ formFilter.addEventListener('change', () => {
     (place) => {
       MARKER_GROUP.clearLayers();
       const houseTypeElements = place.filter((element) => {
-        if (element.offer.type === houseType) {
-          if (houseType === 'any') {
-            return true;
-          } else if (houseType === 'bungalow') {
-            return true;
-          } else if (houseType === 'flat') {
-            return true;
-          } else if (houseType === 'hotel') {
-            return true;
-          } else if (houseType === 'house') {
-            return true;
-          } else if (houseType === 'palace') {
-            return true;
-          }
-          return false;
+        if (houseType === 'any') {
+          return true;
+        } else if (houseType === 'bungalow' && element.offer.type === 'bungalow') {
+          return true;
+        } else if (houseType === 'flat' && element.offer.type === 'flat') {
+          return true;
+        } else if (houseType === 'hotel' && element.offer.type === 'hotel') {
+          return true;
+        } else if (houseType === 'house' && element.offer.type === 'house') {
+          return true;
+        } else if (houseType === 'palace' && element.offer.type === 'palace') {
+          return true;
         }
-
       });
       const housePriceElements = houseTypeElements.filter((element) => {
         if (housePrice === 'any') {
@@ -131,7 +117,7 @@ formFilter.addEventListener('change', () => {
         return false;
       });
       const houseRoomElements = housePriceElements.filter((element) => {
-        if (houseRoom === 'any' && element.offer.rooms > 3) {
+        if (houseRoom === 'any') {
           return true;
         } else if (houseRoom === '1' && element.offer.rooms === 1) {
           return true;
@@ -143,7 +129,7 @@ formFilter.addEventListener('change', () => {
         return false;
       });
       const houseGuestsElements = houseRoomElements.filter((element) => {
-        if (houseGuests === 'any' || element.offer.guests > 2) {
+        if (houseGuests === 'any') {
           return true;
         } else if (houseGuests === '0' && element.offer.guests === 0) {
           return true;
@@ -154,24 +140,14 @@ formFilter.addEventListener('change', () => {
         }
         return false;
       });
-      const fieldSetElements = houseGuestsElements.filter((element)=> {
-        if(element.offer.features.values((item) => item === featuresWifi)) {
-          return true;
-        } else if (element.offer.features.values((item) => item === featuresDishwasher)) {
-          return true;
-        } else if (element.offer.features.values((item) => item === featuresParking)) {
-          return true;
-        } else if (element.offer.features.values((item) => item === featuresWasher)) {
-          return true;
-        } else if (element.offer.features.values((item) => item === featuresElevator)) {
-          return true;
-        }else if (element.offer.features.values((item) => item === featuresConditioner)) {
-          return true;
-        }
-        return false;
-      });
+      const featuresWifiElement = houseGuestsElements.filter((element) => (element.offer.features && element.offer.features.includes(featuresWifi)) || featuresWifi === null);
+      const featuresDishwasherElement = featuresWifiElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresDishwasher)) || featuresDishwasher === null);
+      const featuresParkingElement = featuresDishwasherElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresParking)) || featuresParking === null);
+      const featuresWasherElement = featuresParkingElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresWasher)) || featuresWasher === null);
+      const featuresElevatorElement = featuresWasherElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresElevator)) || featuresElevator === null);
+      const featuresConditionerElement = featuresElevatorElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresConditioner)) || featuresConditioner === null);
 
-      fieldSetElements.slice(0, 10).forEach((element) => {
+      featuresConditionerElement.slice(0, 10).forEach((element) => {
         createMarker(element);
       });
 
