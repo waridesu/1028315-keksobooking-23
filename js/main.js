@@ -1,12 +1,7 @@
-import {createTemporalData} from './utils/get-temporal-data.js';
 import {createNewDomElement} from './utils/create-new-dom-elemnts.js';
 import './utils/set-processing-logic.js';
 import {createFetch, sendForm} from './utils/toFetchData.js';
 
-
-const offerArray = createTemporalData();
-const dataArray = [];
-offerArray.forEach((value) => dataArray.push(createNewDomElement(value)));
 const mapAddress = document.querySelector('#address');
 const mainForm = document.querySelector('.ad-form');
 const toggleDisabled = (tagName, boolean) => mainForm.querySelectorAll(tagName).forEach((element) => element.disabled = boolean);
@@ -16,23 +11,23 @@ toggleDisabled('select', true);
 toggleDisabled('textarea', true);
 toggleDisabled('checkbox', true);
 
-const mainPinIcon = L.icon({
+const MAIN_PIN_ICON = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
-const mainPinMarker =
+const MAIN_PIN_MARKER =
   L.marker({
     lat: 35.658581,
     lng: 139.745438,
   },
   {
     draggable: true,
-    icon: mainPinIcon,
+    icon: MAIN_PIN_ICON,
   });
 
-const map = L.map('map-canvas');
-map
+const MAP = L.map('map-canvas');
+MAP
   .on('load', () => {
     mainForm.classList.remove('ad-form--disabled');
     toggleDisabled('input', false);
@@ -49,32 +44,30 @@ L.tileLayer(
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
-).addTo(map);
+).addTo(MAP);
 mapAddress.value = '35.6585 139.7454';
-mainPinMarker.on('dragend', (event) => mapAddress.value = `${event.target._latlng.lat.toFixed(4)} ${event.target._latlng.lng.toFixed(4)}`);
-mainPinMarker.addTo(map);
+MAIN_PIN_MARKER.on('dragend', (event) => mapAddress.value = `${event.target._latlng.lat.toFixed(4)} ${event.target._latlng.lng.toFixed(4)}`);
+MAIN_PIN_MARKER.addTo(MAP);
 
-const markerGroup = L.layerGroup().addTo(map);
+const MARKER_GROUP = L.layerGroup().addTo(MAP);
 
-function  createMarker(element){
-  const icon = L.icon({
+const createMarker = (element) => {
+  const ICON = L.icon({
     iconUrl: './img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   });
-  const marker = L.marker([
+  const MARKER = L.marker([
     element.location.lat,
     element.location.lng,
   ],
   {
-    icon,
+    icon: ICON,
   });
-
-  marker
-    .addTo(markerGroup)
+  MARKER
+    .addTo(MARKER_GROUP)
     .bindPopup(createNewDomElement(element), {keepToView: true});
-
-}
+};
 
 createFetch(
   (place) => place.slice(0, 10).forEach((element) => {
@@ -91,31 +84,30 @@ const placeForm = document.querySelector('.ad-form');
 
 const formFilter = document.querySelector('.map__filters');
 formFilter.addEventListener('change', () => {
-  const filtersForm = document.forms.filters;
-  const filtersFormData = new FormData(filtersForm);
+  const filtersFormData = new FormData(document.forms.filters);
   const houseType = filtersFormData.get('housing-type');
   const housePrice = filtersFormData.get('housing-price');
   const houseRoom = filtersFormData.get('housing-rooms');
   const houseGuests = filtersFormData.get('housing-guests');
-  const featuresWifi = filtersFormData.get('features_wifi');
-  const featuresDishwasher = filtersFormData.get('features_dishwasher');
-  const featuresParking = filtersFormData.get('features_parking');
-  const featuresWasher = filtersFormData.get('features_washer');
-  const featuresElevator = filtersFormData.get('features_elevator');
-  const featuresConditioner = filtersFormData.get('features_conditioner');
+  const featuresWifi = filtersFormData.get('wifi');
+  const featuresDishwasher = filtersFormData.get('dishwasher');
+  const featuresParking = filtersFormData.get('parking');
+  const featuresWasher = filtersFormData.get('washer');
+  const featuresElevator = filtersFormData.get('elevator');
+  const featuresConditioner = filtersFormData.get('conditioner');
 
   createFetch(
     (place) => {
-      markerGroup.clearLayers();
-      const  houseTypeElements= place.filter((element) => {
-        if(element.offer.type === houseType) {
-          if(houseType === 'any') {
+      MARKER_GROUP.clearLayers();
+      const houseTypeElements = place.filter((element) => {
+        if (element.offer.type === houseType) {
+          if (houseType === 'any') {
             return true;
-          } else if(houseType === 'bungalow') {
+          } else if (houseType === 'bungalow') {
             return true;
-          } else if(houseType === 'flat') {
+          } else if (houseType === 'flat') {
             return true;
-          } else if(houseType === 'hotel') {
+          } else if (houseType === 'hotel') {
             return true;
           } else if (houseType === 'house') {
             return true;
@@ -130,47 +122,56 @@ formFilter.addEventListener('change', () => {
         if (housePrice === 'any') {
           return true;
         } else if (housePrice === 'low' && (element.offer.price <= 10000)) {
-          return  true;
+          return true;
         } else if (housePrice === 'high' && (element.offer.price >= 50000)) {
           return true;
         } else if (housePrice === 'middle' && (element.offer.price >= 10000 && element.offer.price <= 50000)) {
-          return  true;
-        }
-        return false;
-      });
-      const houseRoomElements = housePriceElements.filter((element)=> {
-        if(houseRoom ==='any' && element.offer.rooms > 3) {
-          return true;
-        } else if(houseRoom ==='1' && element.offer.rooms === 1) {
-          return true;
-        }else if(houseRoom ==='2' && element.offer.rooms === 2) {
-          return true;
-        }else if(houseRoom ==='3' && element.offer.rooms === 3) {
           return true;
         }
         return false;
       });
-      const houseGuestsElements = houseRoomElements.filter((element)=>{
-        if(houseGuests ==='any' && element.offer.guests > 2) {
+      const houseRoomElements = housePriceElements.filter((element) => {
+        if (houseRoom === 'any' && element.offer.rooms > 3) {
           return true;
-        } else if(houseGuests ==='0' && element.offer.guests === 0) {
+        } else if (houseRoom === '1' && element.offer.rooms === 1) {
           return true;
-        }else if(houseGuests ==='1' && element.offer.guests === 1) {
+        } else if (houseRoom === '2' && element.offer.rooms === 2) {
           return true;
-        }else if(houseGuests ==='2' && element.offer.guests === 2) {
+        } else if (houseRoom === '3' && element.offer.rooms === 3) {
           return true;
         }
         return false;
       });
-      const featuresWifiElement = houseGuestsElements.filter((element)=> element.offer.features.filter((item)=> item=== featuresWifi ));
-      const featuresDishwasherElement = featuresWifiElement.filter((element)=> element.offer.features.filter((item)=> item === featuresDishwasher ));
-      const featuresParkingElement = featuresDishwasherElement.filter((element)=> element.offer.features.filter((item)=> item === featuresParking ));
-      const featuresWasherElement = featuresParkingElement.filter((element)=> element.offer.features.filter((item)=> item === featuresWasher ));
-      const featuresElevatorElement = featuresWasherElement.filter((element)=> element.offer.features.filter((item)=> item === featuresElevator ));
-      const featuresConditionerElement = featuresElevatorElement.filter((element)=> element.offer.features.filter((item)=> item === featuresConditioner ));
+      const houseGuestsElements = houseRoomElements.filter((element) => {
+        if (houseGuests === 'any' || element.offer.guests > 2) {
+          return true;
+        } else if (houseGuests === '0' && element.offer.guests === 0) {
+          return true;
+        } else if (houseGuests === '1' && element.offer.guests === 1) {
+          return true;
+        } else if (houseGuests === '2' && element.offer.guests === 2) {
+          return true;
+        }
+        return false;
+      });
+      const fieldSetElements = houseGuestsElements.filter((element)=> {
+        if(element.offer.features.values((item) => item === featuresWifi)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresDishwasher)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresParking)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresWasher)) {
+          return true;
+        } else if (element.offer.features.values((item) => item === featuresElevator)) {
+          return true;
+        }else if (element.offer.features.values((item) => item === featuresConditioner)) {
+          return true;
+        }
+        return false;
+      });
 
-
-      featuresConditionerElement.slice(0,10).forEach((element) => {
+      fieldSetElements.slice(0, 10).forEach((element) => {
         createMarker(element);
       });
 
@@ -181,7 +182,7 @@ placeForm.addEventListener('submit', (event) => {
   event.preventDefault();
   sendForm(
     () => {
-      mainPinMarker.setLatLng({
+      MAIN_PIN_MARKER.setLatLng({
         lat: 35.658581,
         lng: 139.745438,
       }).update();

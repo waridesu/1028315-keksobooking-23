@@ -1,7 +1,5 @@
-function createNewDomElement(item) {
-  function hideIfNull(params) {
-    return !params ? 'hidden' : '';
-  }
+const createNewDomElement = (item) => {
+  const hideIfNull = (params) => !params ? 'hidden' : '';
 
   return `<article class="popup">
             <img src="${item.author.avatar}" class="popup__avatar ${hideIfNull(item.author.avatar)}" width="70" height="70" alt="Аватар пользователя">
@@ -16,9 +14,9 @@ function createNewDomElement(item) {
             </ul>
             <p class="popup__description ${hideIfNull(item.offer.description)}">${item.offer.description}</p>
             <div class="popup__photos ${hideIfNull(item.offer.photos)}">
-             ${item.offer && item.offer.photos && item.offer.photos.length ? item.offer.photos.map((element) => `<img src="${element}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join(''): null}
+             ${item.offer && item.offer.photos && item.offer.photos.length ? item.offer.photos.map((element) => `<img src="${element}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('') : null}
             </div>
           </article>`;
-}
+};
 
 export {createNewDomElement};
