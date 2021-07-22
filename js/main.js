@@ -5,7 +5,9 @@ import {afterInit, onInit} from './utils/disable-on-init.js';
 
 const mapAddress = document.querySelector('#address');
 
+
 onInit();
+
 const MAIN_PIN_ICON = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
