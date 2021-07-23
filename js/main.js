@@ -1,16 +1,10 @@
 import {createNewDomElement} from './utils/create-new-dom-elemnts.js';
 import './utils/set-processing-logic.js';
 import {createFetch, sendForm} from './utils/toFetchData.js';
+import {beforeInitMap, afterInitMap, mainForm} from './utils/init-map.js';
 
-const mapAddress = document.querySelector('#address');
-const mainForm = document.querySelector('.ad-form');
-const toggleDisabled = (tagName, boolean) => mainForm.querySelectorAll(tagName).forEach((element) => element.disabled = boolean);
-mainForm.classList.add('ad-form--disabled');
-toggleDisabled('input', true);
-toggleDisabled('select', true);
-toggleDisabled('textarea', true);
-toggleDisabled('checkbox', true);
-
+const MAP = L.map('map-canvas');
+const MARKER_GROUP = L.layerGroup().addTo(MAP);
 const MAIN_PIN_ICON = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
@@ -26,15 +20,12 @@ const MAIN_PIN_MARKER =
     icon: MAIN_PIN_ICON,
   });
 
-const MAP = L.map('map-canvas');
+const mapAddress = document.querySelector('#address');
+beforeInitMap(mainForm);
+
+
 MAP
-  .on('load', () => {
-    mainForm.classList.remove('ad-form--disabled');
-    toggleDisabled('input', false);
-    toggleDisabled('select', false);
-    toggleDisabled('textarea', false);
-    toggleDisabled('checkbox', false);
-  })
+  .on('load', () => afterInitMap(mainForm) )
   .setView({
     lat: 35.658581,
     lng: 139.745438,
@@ -49,7 +40,6 @@ mapAddress.value = '35.6585 139.7454';
 MAIN_PIN_MARKER.on('dragend', (event) => mapAddress.value = `${event.target._latlng.lat.toFixed(4)} ${event.target._latlng.lng.toFixed(4)}`);
 MAIN_PIN_MARKER.addTo(MAP);
 
-const MARKER_GROUP = L.layerGroup().addTo(MAP);
 
 const createMarker = (element) => {
   const ICON = L.icon({
@@ -83,7 +73,8 @@ createFetch(
 const placeForm = document.querySelector('.ad-form');
 
 const formFilter = document.querySelector('.map__filters');
-formFilter.addEventListener('change', () => {
+
+const formFilterHandler = (event) => {
   const filtersFormData = new FormData(document.forms.filters);
   const houseType = filtersFormData.get('housing-type');
   const housePrice = filtersFormData.get('housing-price');
@@ -100,23 +91,19 @@ formFilter.addEventListener('change', () => {
     (place) => {
       MARKER_GROUP.clearLayers();
       const houseTypeElements = place.filter((element) => {
-        if (element.offer.type === houseType) {
-          if (houseType === 'any') {
-            return true;
-          } else if (houseType === 'bungalow') {
-            return true;
-          } else if (houseType === 'flat') {
-            return true;
-          } else if (houseType === 'hotel') {
-            return true;
-          } else if (houseType === 'house') {
-            return true;
-          } else if (houseType === 'palace') {
-            return true;
-          }
-          return false;
+        if (houseType === 'any') {
+          return true;
+        } else if (houseType === 'bungalow' && element.offer.type === 'bungalow') {
+          return true;
+        } else if (houseType === 'flat' && element.offer.type === 'flat') {
+          return true;
+        } else if (houseType === 'hotel' && element.offer.type === 'hotel') {
+          return true;
+        } else if (houseType === 'house' && element.offer.type === 'house') {
+          return true;
+        } else if (houseType === 'palace' && element.offer.type === 'palace') {
+          return true;
         }
-
       });
       const housePriceElements = houseTypeElements.filter((element) => {
         if (housePrice === 'any') {
@@ -131,7 +118,7 @@ formFilter.addEventListener('change', () => {
         return false;
       });
       const houseRoomElements = housePriceElements.filter((element) => {
-        if (houseRoom === 'any' && element.offer.rooms > 3) {
+        if (houseRoom === 'any') {
           return true;
         } else if (houseRoom === '1' && element.offer.rooms === 1) {
           return true;
@@ -143,7 +130,7 @@ formFilter.addEventListener('change', () => {
         return false;
       });
       const houseGuestsElements = houseRoomElements.filter((element) => {
-        if (houseGuests === 'any' && element.offer.guests > 2) {
+        if (houseGuests === 'any') {
           return true;
         } else if (houseGuests === '0' && element.offer.guests === 0) {
           return true;
@@ -154,19 +141,22 @@ formFilter.addEventListener('change', () => {
         }
         return false;
       });
-      const featuresWifiElement = houseGuestsElements.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresWifi));
-      const featuresDishwasherElement = featuresWifiElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresDishwasher));
-      const featuresParkingElement = featuresDishwasherElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresParking));
-      const featuresWasherElement = featuresParkingElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresWasher));
-      const featuresElevatorElement = featuresWasherElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresElevator));
-      const featuresConditionerElement = featuresElevatorElement.filter((element) => element.offer.features.filter((item) => item.toLowerCase() === featuresConditioner));
+      const featuresWifiElement = houseGuestsElements.filter((element) => (element.offer.features && element.offer.features.includes(featuresWifi)) || featuresWifi === null);
+      const featuresDishwasherElement = featuresWifiElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresDishwasher)) || featuresDishwasher === null);
+      const featuresParkingElement = featuresDishwasherElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresParking)) || featuresParking === null);
+      const featuresWasherElement = featuresParkingElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresWasher)) || featuresWasher === null);
+      const featuresElevatorElement = featuresWasherElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresElevator)) || featuresElevator === null);
+      const featuresConditionerElement = featuresElevatorElement.filter((element) => (element.offer.features && element.offer.features.includes(featuresConditioner)) || featuresConditioner === null);
 
       featuresConditionerElement.slice(0, 10).forEach((element) => {
         createMarker(element);
       });
-
     });
-});
+  event.currentTarget.removeEventListener(event.type, formFilterHandler);
+  event.currentTarget.addEventListener(event.type, formFilterHandler);
+};
+
+formFilter.addEventListener('change', formFilterHandler);
 
 placeForm.addEventListener('submit', (event) => {
   event.preventDefault();

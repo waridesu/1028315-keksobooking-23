@@ -5,8 +5,7 @@ window.onload = () => {
     priceByNight.value = 0;
   }
 };
-
-typeOfResidence.addEventListener('change', (event) => {
+const typeOfResidenceHandler = (event) => {
   const priceByNight = document.querySelector('#price');
   switch (event.target.value) {
     case 'bungalow':
@@ -20,12 +19,17 @@ typeOfResidence.addEventListener('change', (event) => {
     case 'palace':
       return priceByNight.value = 10000;
   }
-});
+  event.currentTarget.removeEventListener(event.type, typeOfResidenceHandler);
+  event.currentTarget.addEventListener(event.type, typeOfResidenceHandler);
+};
+
+typeOfResidence.addEventListener('change', typeOfResidenceHandler);
 
 const time = document.querySelector('.ad-form__element--time');
-
-time.addEventListener('change', (event) => {
+const timeHandler = (event)=> {
   const timeIn = document.querySelector('#timein');
   const timeOut = document.querySelector('#timeout');
   timeIn.value = timeOut.value = event.target.value;
-});
+
+};
+time.addEventListener('change', timeHandler);
