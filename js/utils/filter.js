@@ -1,6 +1,8 @@
 import {createFetch} from './toFetchData.js';
 import {createMarker, MARKER_GROUP} from './marker.js';
 
+const placeFormElement = document.querySelector('.ad-form');
+
 const formFilterHandler = (event) => {
   const filtersFormData = new FormData(document.forms.filters);
   const houseType = filtersFormData.get('housing-type');
@@ -79,10 +81,15 @@ const formFilterHandler = (event) => {
         createMarker(element);
       });
     });
-  if(event.type === 'keyup') {
-    event.currentTarget.removeEventListener(event.type, formFilterHandler);
-  }
+  event.currentTarget.removeEventListener(event.type, formFilterHandler);
   event.currentTarget.addEventListener(event.type, formFilterHandler);
 };
 
-export  { formFilterHandler };
+const resetFormElementHandler =(event)=> {
+  placeFormElement.reset();
+  event.currentTarget.removeEventListener(event.type, resetFormElementHandler);
+  event.currentTarget.addEventListener(event.type, resetFormElementHandler);
+};
+
+
+export  { formFilterHandler, resetFormElementHandler, placeFormElement };
