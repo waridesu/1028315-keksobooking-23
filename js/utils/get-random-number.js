@@ -4,6 +4,4 @@ const getRandomNumber = (min, max)=> {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-getRandomNumber(10, 20);
-
 export { getRandomNumber };

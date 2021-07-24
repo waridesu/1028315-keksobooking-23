@@ -5,6 +5,4 @@ const getCoordinatesNumber = (min, max, toFixed)=> {
   return (Math.random() * (max - min) + min).toFixed(toFixed);
 };
 
-getCoordinatesNumber(0.002, 0.05, 4);
-
 export { getCoordinatesNumber };

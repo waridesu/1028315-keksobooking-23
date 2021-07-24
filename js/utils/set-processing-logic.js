@@ -41,12 +41,12 @@ const numberRoomsHandler = (event) => {
   const capacity = document.querySelector('#capacity');
   const item = capacity.children;
 
-  function sort(number) {
+  const sort = (number)=> {
     for (let index = 0; index < item.length; index++) {
       item[index].value === number ? item[index].disabled = false : item[index].disabled = true;
     }
     capacity.value = number;
-  }
+  };
 
   if (numberRooms.value === '1') {
     sort('1');

@@ -14,8 +14,8 @@ const createTemporalData = () => {
   const HOUSE = 'Дом';
   const BUNGALOW = 'Бунгало';
   const HOTEL = 'Отель';
-  const TYPE = [PALACE, FLAT, HOUSE, BUNGALOW, HOTEL];
-  const TIME = ['12:00', '13:00', '13:00'];
+  const TYPES = [PALACE, FLAT, HOUSE, BUNGALOW, HOTEL];
+  const HOURS = ['12:00', '13:00', '13:00'];
   // string array from values
   const WIFI = 'wifi';
   const DISHWASHER = 'dishwasher';
@@ -23,8 +23,8 @@ const createTemporalData = () => {
   const WASHER = 'washer';
   const ELEVATOR = 'elevator';
   const CONDITIONER = 'conditioner';
-  const FEATURES_ARRAY = [WIFI, DISHWASHER, PARKING, WASHER, ELEVATOR, CONDITIONER];
-  const PHOTO_ARRAY = [
+  const FEATURES = [WIFI, DISHWASHER, PARKING, WASHER, ELEVATOR, CONDITIONER];
+  const PHOTOS = [
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
     'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
@@ -40,15 +40,15 @@ const createTemporalData = () => {
           ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         address: `${LOCATION_LAT} ${LOCATION_LNG}`,
         price: getRandomNumber(1000, 5000),
-        type: TYPE[getRandomNumber(0, TYPE.length - 1)],
+        type: TYPES[getRandomNumber(0, TYPES.length - 1)],
         rooms: getRandomNumber(1, 5),
         guests: getRandomNumber(1, 5),
-        checkin: TIME[getRandomNumber(0, TIME.length - 1)],
-        checkout: TIME[getRandomNumber(0, TIME.length - 1)],
-        features: createArr([...FEATURES_ARRAY], 6),
+        checkin: HOURS[getRandomNumber(0, HOURS.length - 1)],
+        checkout: HOURS[getRandomNumber(0, HOURS.length - 1)],
+        features: createArr([...FEATURES], 6),
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' +
           ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        photos: createArr([...PHOTO_ARRAY], 3),
+        photos: createArr([...PHOTOS], 3),
       },
       location: {
         lat: LOCATION_LAT,
@@ -59,7 +59,5 @@ const createTemporalData = () => {
   }
   return filledData;
 };
-
-createTemporalData();
 
 export {createTemporalData};

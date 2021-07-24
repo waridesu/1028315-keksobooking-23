@@ -9,6 +9,4 @@ const getRandomPositiveInteger = (min, max) => {
   return Math.floor(RESULT);
 };
 
-getRandomPositiveInteger(1, 10);
-
 export {getRandomPositiveInteger};
