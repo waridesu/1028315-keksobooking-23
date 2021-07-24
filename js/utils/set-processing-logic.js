@@ -2,22 +2,22 @@ const typeOfResidence = document.querySelector('#type');
 window.onload = () => {
   if (typeOfResidence.value === 'bungalow') {
     const priceByNight = document.querySelector('#price');
-    priceByNight.value = 0;
+    priceByNight.placeholder = 0;
   }
 };
 const typeOfResidenceHandler = (event) => {
   const priceByNight = document.querySelector('#price');
   switch (event.target.value) {
     case 'bungalow':
-      return priceByNight.value = 0;
+      return priceByNight.placeholder = 0;
     case 'flat':
-      return priceByNight.value = 1000;
+      return priceByNight.placeholder = 1000;
     case 'hotel':
-      return priceByNight.value = 3000;
+      return priceByNight.placeholder = 3000;
     case 'house':
-      return priceByNight.value = 5000;
+      return priceByNight.placeholder = 5000;
     case 'palace':
-      return priceByNight.value = 10000;
+      return priceByNight.placeholder = 10000;
   }
   event.currentTarget.removeEventListener(event.type, typeOfResidenceHandler);
   event.currentTarget.addEventListener(event.type, typeOfResidenceHandler);

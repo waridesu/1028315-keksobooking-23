@@ -33,8 +33,8 @@ const initMap = (element) => {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(MAP);
-  element.value = '35.6585 139.7454';
-  MAIN_PIN_MARKER.on('dragend', (event) => element.value = `${event.target._latlng.lat.toFixed(4)} ${event.target._latlng.lng.toFixed(4)}`);
+  element.value = '35.65858, 139.74543';
+  MAIN_PIN_MARKER.on('dragend', (event) => element.value = `${event.target._latlng.lat.toFixed(5)}, ${event.target._latlng.lng.toFixed(5)}`);
   MAIN_PIN_MARKER.addTo(MAP);
 };
 

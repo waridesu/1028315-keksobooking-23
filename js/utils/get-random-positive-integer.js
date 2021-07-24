@@ -1,4 +1,3 @@
-
 const getRandomPositiveInteger = (min, max) => {
 
   const LOWER = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
