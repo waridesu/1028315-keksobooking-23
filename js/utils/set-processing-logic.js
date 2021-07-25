@@ -1,23 +1,27 @@
-const typeOfResidence = document.querySelector('#type');
-window.onload = () => {
-  if (typeOfResidence.value === 'bungalow') {
-    const priceByNight = document.querySelector('#price');
-    priceByNight.placeholder = 0;
-  }
+const MIN_PALACE_PRICE = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
 };
+
+const typeOfResidence = document.querySelector('#type');
+window.onload = typeOfResidence.value === 'bungalow'? document.querySelector('#price').placeholder = MIN_PALACE_PRICE.bungalow:null;
+
 const typeOfResidenceHandler = (event) => {
   const priceByNight = document.querySelector('#price');
   switch (event.target.value) {
     case 'bungalow':
-      return priceByNight.placeholder = 0;
+      return priceByNight.placeholder = MIN_PALACE_PRICE.bungalow;
     case 'flat':
-      return priceByNight.placeholder = 1000;
+      return priceByNight.placeholder = MIN_PALACE_PRICE.flat;
     case 'hotel':
-      return priceByNight.placeholder = 3000;
+      return priceByNight.placeholder = MIN_PALACE_PRICE.hotel;
     case 'house':
-      return priceByNight.placeholder = 5000;
+      return priceByNight.placeholder = MIN_PALACE_PRICE.house;
     case 'palace':
-      return priceByNight.placeholder = 10000;
+      return priceByNight.placeholder = MIN_PALACE_PRICE.palace;
   }
   event.currentTarget.removeEventListener(event.type, typeOfResidenceHandler);
   event.currentTarget.addEventListener(event.type, typeOfResidenceHandler);
@@ -45,7 +49,6 @@ const numberRoomsHandler = (event) => {
     for (let index = 0; index < item.length; index++) {
       item[index].value === number ? item[index].disabled = false : item[index].disabled = true;
     }
-    capacity.value = number;
   };
 
   if (numberRooms.value === '1') {
@@ -54,13 +57,11 @@ const numberRoomsHandler = (event) => {
     for (let index = 0; index < item.length; index++) {
       const itemValue = item[index].value;
       item[index].disabled = !(itemValue === '1' || itemValue === '2');
-      capacity.value = '1';
     }
   } else if (numberRooms.value === '3') {
     for (let index = 0; index < item.length; index++) {
       const itemValue = item[index].value;
       item[index].disabled = !(itemValue === '1' || itemValue === '2' || itemValue === '3');
-      capacity.value = '1';
     }
   } else {
     sort('0');

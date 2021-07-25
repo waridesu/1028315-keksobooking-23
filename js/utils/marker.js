@@ -1,16 +1,26 @@
-import {afterInitMap, beforeInitMap, mainForm} from './init-map.js';
 import {createNewDomElement} from './create-new-dom-elemnts.js';
+import {afterInitMap, beforeInitMap} from './init-map.js';
 
+const FILTER_FORM = document.querySelector('.map__filters');
+const SEND_FORM = document.querySelector('.ad-form');
 const MAP = L.map('map-canvas');
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
 const MAIN_MARKER_INIT_POSITION = {
   lat: 35.658581,
   lng: 139.745438,
 };
+const MAIN_ICON_SIZE = [52, 52];
+const MAIN_ICON_ANCHOR = [26, 52];
+const MAP_CENTER = {
+  lat: 35.658581,
+  lng: 139.745438,
+};
+const GROUP_ICON_SIZE = [40, 40];
+const GROUP_ICON_ANCHOR = [20, 40];
 const MAIN_PIN_ICON = L.icon({
   iconUrl: './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: MAIN_ICON_SIZE,
+  iconAnchor: MAIN_ICON_ANCHOR,
 });
 const MAIN_PIN_MARKER =
   L.marker(MAIN_MARKER_INIT_POSITION,
@@ -19,15 +29,11 @@ const MAIN_PIN_MARKER =
       icon: MAIN_PIN_ICON,
     });
 
-const initMap = (element) => {
-  beforeInitMap(mainForm);
-
+const initMap = async (element) => {
+  beforeInitMap(FILTER_FORM, SEND_FORM);
   MAP
-    .on('load', () => afterInitMap(mainForm))
-    .setView({
-      lat: 35.658581,
-      lng: 139.745438,
-    }, 12);
+    .on('load', ()=>afterInitMap(FILTER_FORM, SEND_FORM))
+    .setView(MAP_CENTER, 12);
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -42,8 +48,8 @@ const initMap = (element) => {
 const createMarker = (element) => {
   const ICON = L.icon({
     iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: GROUP_ICON_SIZE,
+    iconAnchor: GROUP_ICON_ANCHOR,
   });
   const MARKER = L.marker([
     element.location.lat,
