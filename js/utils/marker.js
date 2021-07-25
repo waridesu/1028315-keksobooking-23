@@ -3,26 +3,27 @@ import {createNewDomElement} from './create-new-dom-elemnts.js';
 
 const MAP = L.map('map-canvas');
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
+const MAIN_MARKER_INIT_POSITION = {
+  lat: 35.658581,
+  lng: 139.745438,
+};
 const MAIN_PIN_ICON = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 const MAIN_PIN_MARKER =
-  L.marker({
-    lat: 35.658581,
-    lng: 139.745438,
-  },
-  {
-    draggable: true,
-    icon: MAIN_PIN_ICON,
-  });
+  L.marker(MAIN_MARKER_INIT_POSITION,
+    {
+      draggable: true,
+      icon: MAIN_PIN_ICON,
+    });
 
 const initMap = (element) => {
   beforeInitMap(mainForm);
 
   MAP
-    .on('load', () => afterInitMap(mainForm) )
+    .on('load', () => afterInitMap(mainForm))
     .setView({
       lat: 35.658581,
       lng: 139.745438,
@@ -33,7 +34,7 @@ const initMap = (element) => {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(MAP);
-  element.value = '35.65858, 139.74543';
+  element.value = `${MAIN_MARKER_INIT_POSITION.lat.toFixed(5)}, ${MAIN_MARKER_INIT_POSITION.lng.toFixed(5)}`;
   MAIN_PIN_MARKER.on('dragend', (event) => element.value = `${event.target._latlng.lat.toFixed(5)}, ${event.target._latlng.lng.toFixed(5)}`);
   MAIN_PIN_MARKER.addTo(MAP);
 };
@@ -56,5 +57,5 @@ const createMarker = (element) => {
     .bindPopup(createNewDomElement(element), {keepToView: true});
 };
 
-export  { initMap, MAIN_PIN_MARKER, MARKER_GROUP, MAP, createMarker };
+export {initMap, MAIN_PIN_MARKER, MARKER_GROUP, MAP, createMarker};
 
