@@ -1,4 +1,5 @@
-const toggleDisabled = (tagName, boolean) => document.body.querySelectorAll(tagName).forEach((element) => element.disabled = boolean);
+const toggleDisabled = (tagName, boolean) => document.body.querySelectorAll(tagName)
+  .forEach((element) => element.disabled = boolean);
 
 const beforeInitMap = (filterForm, sendForm) => {
   filterForm.classList.add('ad-form--disabled');

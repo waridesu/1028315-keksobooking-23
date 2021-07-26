@@ -9,9 +9,9 @@ const mapAddressElement = document.querySelector('#address');
 const formFilterElement = document.querySelector('.map__filters');
 const resetFormElement = document.querySelector('.ad-form__reset');
 
-getRequestData();
-
 initMap(mapAddressElement);
+
+getRequestData();
 
 formFilterElement.addEventListener('change', formFilterHandler);
 
