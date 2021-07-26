@@ -4,14 +4,22 @@ import { formFilterHandler, resetFormElementHandler } from './utils/filter.js';
 import './utils/send-form.js';
 import { getRequestData } from './utils/get-fetch-data.js';
 import { backgroundChanging, imageChanging } from './utils/get-image-from-file.js';
+import {afterInitMap, beforeInitMap} from './utils/init-map.js';
 
 const mapAddressElement = document.querySelector('#address');
 const formFilterElement = document.querySelector('.map__filters');
 const resetFormElement = document.querySelector('.ad-form__reset');
+const FILTER_FORM = document.querySelector('.map__filters');
+const SEND_FORM = document.querySelector('.ad-form');
 
-initMap(mapAddressElement);
+beforeInitMap(FILTER_FORM, SEND_FORM);
 
-getRequestData();
+initMap(mapAddressElement, () => {
+  getRequestData()
+    .finally(() => {
+      afterInitMap(FILTER_FORM, SEND_FORM);
+    });
+});
 
 formFilterElement.addEventListener('change', formFilterHandler);
 

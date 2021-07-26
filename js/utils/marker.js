@@ -1,8 +1,5 @@
 import {createNewDomElement} from './create-new-dom-elemnts.js';
-import {afterInitMap, beforeInitMap} from './init-map.js';
 
-const FILTER_FORM = document.querySelector('.map__filters');
-const SEND_FORM = document.querySelector('.ad-form');
 const MAP = L.map('map-canvas');
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
 const MAIN_MARKER_INIT_POSITION = {
@@ -29,10 +26,9 @@ const MAIN_PIN_MARKER =
       icon: MAIN_PIN_ICON,
     });
 
-const initMap = async (element) => {
-  beforeInitMap(FILTER_FORM, SEND_FORM);
+const initMap = async (element, onLoadData) => {
   MAP
-    .on('load', ()=>afterInitMap(FILTER_FORM, SEND_FORM))
+    .on('load', () => onLoadData())
     .setView(MAP_CENTER, 12);
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
