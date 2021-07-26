@@ -9,6 +9,8 @@ const imageChanging = (changeItem, pictureAddress) => {
 
     reader.onload = (evt) => img.src = evt.target.result;
     reader.readAsDataURL(selectedFile);
+    event.currentTarget.removeEventListener(event.type, avatarHandler);
+    event.currentTarget.addEventListener(event.type, avatarHandler);
   };
   avatar.addEventListener('change', avatarHandler);
 };
@@ -26,6 +28,8 @@ const backgroundChanging = (changeItem, pictureAddress) => {
       img.style.backgroundSize = 'cover';
     };
     reader.readAsDataURL(selectedFile);
+    event.currentTarget.removeEventListener(event.type, backgroundHandler);
+    event.currentTarget.addEventListener(event.type, backgroundHandler);
   };
   avatar.addEventListener('change', backgroundHandler);
 };
